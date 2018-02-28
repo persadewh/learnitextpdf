@@ -18,6 +18,8 @@ import com.itextpdf.kernel.pdf.canvas.PdfCanvasConstants;
 import com.itextpdf.kernel.pdf.extgstate.PdfExtGState;
 import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.List;
+import com.itextpdf.layout.element.ListItem;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.Property;
 import com.itextpdf.layout.property.TextAlignment;
@@ -37,12 +39,23 @@ public class TestWatermark {
 		Document doc = new Document(pdf);
 		
 		PageSize pageSize = PageSize.A4.rotate();
-		
 		PdfPage page = pdf.addNewPage(pageSize);
 		PdfCanvas canvas = new PdfCanvas(page);
 		
 		PdfFont font = PdfFontFactory.createFont("Helvetica-Bold");
+		doc.add(new Paragraph("iText is : ").setFont(font));
 		
+		List list = new List().setSymbolIndent(12).setListSymbol("\u2022").setFont(font);
+		list.add(new ListItem("1"))
+			.add(new ListItem("2"))
+			.add(new ListItem("3"))
+			.add(new ListItem("4"))
+			.add(new ListItem("5"))
+			.add(new ListItem("6"));
+		
+		doc.add(list);
+		
+		//watermark
 		Paragraph p = new Paragraph("CONFIDENTIAL").setFontSize(60);
 		canvas.saveState();
 		PdfExtGState gs1 = new PdfExtGState().setFillOpacity(0.2f);
